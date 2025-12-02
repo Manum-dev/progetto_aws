@@ -1,4 +1,3 @@
-
 def mostra_feedback(messaggio: str) -> None:
     """
     Restituisce il feedback formattato nella maniera desiderata.
