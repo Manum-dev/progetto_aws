@@ -1,3 +1,4 @@
+
 def mostra_feedback(messaggio: str) -> None:
     """
     Restituisce il feedback formattato nella maniera desiderata.
@@ -9,8 +10,8 @@ def mostra_feedback(messaggio: str) -> None:
 {simbol}
 """)
 
-def is_risposta_esatta(scelta: str) -> bool:
-    if scelta.upper() == "A":
+def is_risposta_esatta(scelta: str, risposta_esatta: str) -> bool:
+    if scelta.upper() == risposta_esatta:
         return True
     else:
         return False
@@ -37,21 +38,12 @@ def valida_scelta(scelta: str) -> bool:
     else: 
         return False
 
-def mostra_domanda() -> None: 
+def mostra_domanda(domanda: str) -> None: 
     """
     Questa funzione restituisce la domanda e le opzioni della riposta. 
     """
     
-    print(
-"""
-Chi parteciperà a Sanremo 2026?
-
-A. Nayt
-B. La Nina
-C. Nilla Pizzi
-D. Rocco Papaleo
-"""
-    )
+    print(domanda)
 
 def raccogli_risposta() -> str:
     """
@@ -61,16 +53,35 @@ def raccogli_risposta() -> str:
     return input("Inserisci la tua scelta: ")
     
 
+def leggi_file() -> str:
+    with open("domanda-1.txt", "r") as file:
+        content = file.read()
+        return content
+
+def estrai_index(content: str) -> int: 
+    return content.index("£")
+
+def estrai_domanda(content: str, index: int) -> str:
+    return content[0:index]
+
+def estrai_risposta(content: str, index: int) -> str:
+    return content[index+1:]
+
 def main():
+    content: str = leggi_file()
+    index: int = estrai_index(content)
+    domanda: str = estrai_domanda(content, index)
+    risposta: str = estrai_risposta(content, index)
+
     is_risposta_corretta: bool = False
     while True:
-        mostra_domanda()
+        mostra_domanda(domanda)
         risposta_da_validare: str = raccogli_risposta()
         risposta_validata: bool = valida_scelta(risposta_da_validare)
         feedback: str = ""
 
         if risposta_validata == True:
-            is_risposta_corretta = is_risposta_esatta(risposta_da_validare)
+            is_risposta_corretta = is_risposta_esatta(risposta_da_validare, risposta)
             feedback = genera_feedback(is_risposta_corretta)
         else: 
             feedback = "Inserisci solo la risposta tra le opzioni elencate"
