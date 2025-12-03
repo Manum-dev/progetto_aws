@@ -13,5 +13,3 @@ numeri_maggiori=prezzi_lista
 for numeri_maggiori in prezzi_lista:
      if numeri_maggiori>50:
           print("Prezzi>50", numeri_maggiori)
-    
-
