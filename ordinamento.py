@@ -8,3 +8,10 @@ print("Massimo",max(prezzi_lista))
 check_item = 23.1
 controllo: bool = check_item in prezzi_lista
 print(check_item, controllo)
+
+numeri_maggiori=prezzi_lista
+for numeri_maggiori in prezzi_lista:
+     if numeri_maggiori>50:
+          print(numeri_maggiori)
+    
+
