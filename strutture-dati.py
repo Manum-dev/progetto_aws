@@ -1,3 +1,19 @@
+#dizionario
+
+personaggio1:dict[str, str] = {
+    "nome" :"Pippo",
+    "tipo": "cane",
+    "email" : "pippo@disney.com"
+}
+
+personaggio1["telefono"] = "09712334"
+
+personaggio1["telefono"] = "09712335"
+
+print(personaggio1.get("telefono"))
+
+
+"""
 stringhe: list[str] = ["Pippo"]
 stringhe.append("Pluto")
 stringhe.append("Minnie")
@@ -19,3 +35,7 @@ deleted_values.append(deleted_values)
 
 print(deleted_values)
 print(stringhe)
+
+"""
+
+
