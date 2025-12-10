@@ -1,6 +1,6 @@
 # Import the submodules
-from . import repository
-from . import services
+from data import repository
+from data import services
 
 # Define the __all__ variable
 __all__ = ["repository", "services"]
