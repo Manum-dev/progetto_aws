@@ -1,4 +1,4 @@
-from data.repository import get_file
+from repository import get_file
 
 def get_domanda_e_risposta_singola(file_path: str) -> str:
     with get_file(file_path) as file:
@@ -88,4 +88,3 @@ def aggiorna_lista_risultati(lista_risultati: list, nuovo_risultato: dict, indic
     else:
         lista_risultati.append(nuovo_risultato)
 
-        
