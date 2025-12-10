@@ -87,4 +87,3 @@ def aggiorna_lista_risultati(lista_risultati: list, nuovo_risultato: dict, indic
         lista_risultati[indice] = nuovo_risultato
     else:
         lista_risultati.append(nuovo_risultato)
-
