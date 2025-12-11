@@ -21,8 +21,10 @@ from ui.console import (
     gestisci_menu_fine_gioco
 )
 
+URL = "https://raw.githubusercontent.com/emanuelegurini/aws-restart/refs/heads/main/quizzettone/domande.txt"
+
 def main():
-    lista_domande = get_lista_domande_e_risposte("domande.txt")
+    lista_domande = get_lista_domande_e_risposte(URL)
     risultato_finale: list[dict[str, str | bool]] = []
 
     counter: int = 0
@@ -84,7 +86,6 @@ def main():
     perc = calcola_percentuale(esatte, totale_domande_fatte)
     is_superato = verifica_superamento(perc)
     
-    mostra_risultati_finali(esatte, errate, totale_domande_fatte, perc, is_superato)
 
 if __name__ == "__main__": 
     main()

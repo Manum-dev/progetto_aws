@@ -1,18 +1,21 @@
-from repository import get_file
+from data.repository import get_file, get_data
 
 def get_domanda_e_risposta_singola(file_path: str) -> str:
+    if URL is None:
     with get_file(file_path) as file:
         content = file.read()
         return content
 
 
-def get_lista_domande_e_risposte(file_path: str) -> list[str]:
-    lista_domande: list[str] = []
+def get_lista_domande_e_risposte(URL: str) -> list[str]:
+    if URL is None: 
+        raise ValueError("L'URL non può essere una stringa vuota!")
 
-    with get_file(file_path) as f:
-        for i in f:
-            lista_domande.append(i.strip())
-    return lista_domande 
+    try:
+        text = get_data(URL) 
+        return [riga.strip() for riga in text.splitlines() if riga.strip()]
+    except Exception as e:
+        raise Exception(f"Prolema di tipo: {e}")
 
 
 def estrai_indice_simbolo(content: str) -> int: 
