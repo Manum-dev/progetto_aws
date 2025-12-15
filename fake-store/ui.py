@@ -1,3 +1,6 @@
+from api import create_product, BASE_URL, get_lista_prodotti
+from requests import exceptions
+
 def print_prodotto(product: dict[str, any]) -> None:
     """Stampa i dettagli completi di un prodotto"""
     print("*" * 30)
@@ -10,33 +13,44 @@ def print_prodotto(product: dict[str, any]) -> None:
     print(f"DESCRIPTION: {product['description']}")
 
 
-def print_products_list(products: list[dict[str, any]]) -> None:
+def print_product_list(product_list: list[dict]) -> None:
     """Stampa la lista di prodotti mostrando solo ID e titolo"""
     print("=" * 50)
     print("LISTA PRODOTTI")
     print("=" * 50)
-    for product in products:
-        print(f"ID: {product['id']:3} - {product['title']}")
+    for product in product_list:
+        print(f"ID: {product['id']} - {product['title']} {product['description']}")
     print("=" * 50)
-    print(f"Totale prodotti: {len(products)}")
+    print(f"Totale prodotti: {len(product)}")
 
-
-def show_menu() -> str:
-    """Mostra il menu principale e restituisce la scelta dell'utente"""
-    print("\n1. Visualizza tutti i prodotti")
-    print("2. Cerca prodotto per ID")
-    return input("\nScegli un'opzione (1 o 2): ")
-
-
-def get_product_id_input() -> int:
-    """Richiede e valida l'input dell'ID prodotto"""
-    id_input = input("\nInserisci l'id del prodotto da visualizzare: ")
-    
-    if not id_input.strip():
-        raise ValueError("L'ID non può essere vuoto!")
-    
-    product_id = int(id_input)
-    if product_id < 0:
-        raise ValueError("L'ID deve essere un numero positivo!")
-    
-    return product_id
+def invia_prodotto_al_server(prodotto: dict) -> None:
+    """Invia il prodotto al server"""
+    try:
+        print("\n⏳ Invio in corso...")
+        risultato = create_product(BASE_URL, prodotto)
+        
+        print("\n" + "🎉"*25)
+        print("  PRODOTTO CREATO CON SUCCESSO!")
+        print("🎉"*25)
+        
+        print("\n📦 DETTAGLI:")
+        print(f"  ID:          {risultato.get('id')}")
+        print(f"  Titolo:      {risultato.get('title')}")
+        print(f"  Prezzo:      €{risultato.get('price')}")
+        print(f"  Descrizione: {risultato.get('description')}")
+        
+        if 'category' in risultato:
+            cat = risultato['category']
+            if isinstance(cat, dict):
+                print(f"  Categoria:   {cat.get('name', 'N/A')}")
+        
+        print("\n✅ Operazione completata!")
+        
+    except exceptions.HTTPError as e:
+        print(f"\n❌ ERRORE HTTP: {e}")
+        print(f"   Status Code: {e.response.status_code}")
+        if e.response.text:
+            print(f"   Dettagli: {e.response.text}")
+            
+    except Exception as e:
+        print(f"\n❌ ERRORE: {e}")
