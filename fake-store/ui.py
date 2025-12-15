@@ -2,7 +2,7 @@ from api import create_product, BASE_URL, get_lista_prodotti
 from requests import exceptions
 
 def print_prodotto(product: dict[str, any]) -> None:
-    """Stampa i dettagli completi di un prodotto"""
+    """Stampa i dettagli completi di un prodotto""""
     print("*" * 30)
     print(f"PRODOTTO")
     print("*" * 30)
