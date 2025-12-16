@@ -24,8 +24,8 @@ def log_message(message: str, type: str) -> str:
             icon = "ℹ️"
         case "SUCCESS":
             icon = "🎉"
-        case _:  # Caso default (opzionale ma consigliato)
-            icon = "📝"
+        case _:  # Caso default 
+            icon = "ℹ️"
     
     print (f"{icon} {message}")
 
