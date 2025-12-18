@@ -1,4 +1,4 @@
-#!/home/manu/progetto_aws/commit_checker/.venv/bin/python3
+#!/home/manu/progetto_aws/commit_checker/.venv/bin/python
 # -*- coding: utf-8 -*-
 import re
 import sys
