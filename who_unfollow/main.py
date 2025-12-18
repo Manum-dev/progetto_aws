@@ -1,131 +1,114 @@
-from requests import get
-import re
-import uuid
 import datetime
+import uuid
+import os
 import json
+from requests import get, Response
+from dotenv import load_dotenv
 
-"""
-1. ho bisogno di una funzione di modellazione della lista che trasforma la lista in un oggetto come segue
-[
-  {
-    id: "dkdxkkdkd"
-    createdAt: data e ora
-    users: []
-    numberOfUsers
-  }
-]
+load_dotenv()
 
-2. apro il mio db con open, estraggo il contenuto, che è una lista
-3. faccio append del nuovo elemento sulla lista che ho appena preso dal db
-4. sovrascrivo il vecchio db con il dato aggiornato
-"""
+base_url = os.getenv("BASE_URL")
+github_token = os.getenv("GITHUB_TOKEN")
 
-BASE_URL: int = "https://github.com" 
-END_URL: str = "tab=followers" 
+def get_all_follower_from_pages(username: str) -> list[dict]:
+    """Prende tutte le pagine con i follower e ne restituisce la lista accorpata"""
+    url = f"{base_url}/users/{username}/followers"
+    page: int = 1
+    users: list = []
 
-PATTERN = r'<a\s+[^>]*href="https://github\.com/([^/]+)\?page=(\d+)&amp;tab=followers"[^>]*>Next</a>'
-PATTERN_USER = r'<span class="Link--secondary(?: pl-1)?">([^<]+)</span>' 
+    while True:
+        print(f"Sto contattando pagina: {page}")
+        response = fetch_users(url, page)
 
+        users.extend(response.json())
 
-def save(db_name: str, new_value: dict[str, str]) -> bool:
-  db: list[str] = []
-  with open(f"db/{db_name}", "r") as f:
-    value = json.load(f)
-    db.extend(value)
-  
-  db.append(new_value)
+        if not has_next_page(response):
+            break
 
-  with open(f"db/{db_name}", "w", encoding='utf-8') as f:
-    json.dump(db, f, indent=4, ensure_ascii=False)
-
-  return bool
-
-def create_record_object(user_list: list[str]) -> dict[str, str]:
-    if not user_list:
-        return None
+        page = page + 1
     
+    return users
+
+def has_next_page(response: Response) -> bool:
+    "Verifica che esista un'altra pagina per prendere i follower"
+    link_header = response.headers.get("Link", "")
+    return "next" in link_header
+
+
+def fetch_users(url: str, page: int) -> Response:
+    """Esegue la chiamata per prendere tutti i dati dal server"""
+    headers = {
+            "Authorization": f"Bearer {github_token}",
+            "X-GitHub-Api-Version": "2022-11-28"
+        }
+    return get(f"{url}?page={page}", headers=headers)
+
+def extract_usernames(users: list[dict]) -> list[str]:
+    usernames: list[str] = []
+    for user in users:
+        usernames.append(user["login"])
+
+    return usernames 
+
+def create_record(usernames: list[str]) -> dict:
+    """Crea un nuovo oggetto record da salvare nel db"""
     now_utc = datetime.datetime.now(datetime.timezone.utc)
     clean_date = now_utc.isoformat(timespec='milliseconds').replace('+00:00', 'Z')
-
     return {
-        'id': str(uuid.uuid4()),  
-        'createdAt': clean_date,  
-        'users': user_list,
-        'numberOfUsers': len(user_list)
+        'id': str(uuid.uuid4()),
+        'creationAt': clean_date,
+        'users' : usernames,
+        'numberOfUsers': len(usernames)
     }
 
-def is_next_button_present(text: str) -> bool:
-  if not text:
-    raise ValueError("La stringa non puo essere vuota!")
+def create_json_db(db_name: str) -> bool:
+    """Crea un nuovo file db con lista vuota."""
+    # Crea la cartella se non esiste
+    os.makedirs(os.path.dirname(db_name), exist_ok=True)
 
-  return bool(re.search(PATTERN, text))
+    with open(db_name, "w") as f:
+        f.write("[]")
+    
+    return True
+
+def check_if_json_db_has_correct_shape(db_name: str) -> bool:
+    """Verifica che il db esiste ed è nella forma corretta."""
+    if not os.path.isfile(db_name):
+        return False
+    
+    with open(db_name, "r") as f:
+        data = json.load(f)
+        return isinstance(data, list)
+
+
+def save_json_db(db_name: str, new_value: dict) -> None: 
+    """Salva il nuovo oggetto nel db."""
+    if not check_if_json_db_has_correct_shape(db_name):
+        create_json_db(db_name)
+
+    db: list[dict] = []
+
+    with open(db_name, "r") as f:
+        db.extend(json.load(f))
+    
+    db.append(new_value)
+
+    with open(db_name, "w", encoding='utf-8') as f:
+        json.dump(db, f, indent=4, ensure_ascii=False)
 
 def main() -> None:
-  
-  print("Start del programma")
+    print("Inizio programma")
+    """
+    lista_test = extract_usernames(DATA)
 
-  controller: bool = False
-  counter: int = 0
+    record = create_record(lista_test)
+    
+    save_json_db("db/db.json", record)
+    print("fine programma")
+    """
 
-  # ==================
-  # Primo while
-  # ==================
+    data = get_all_follower_from_pages("emanuelegurini")
+    print(extract_usernames(data))
 
-  while True:
-
-    try:
-      nome_utente: str = input("Inserisci lo username del profilo github che vuoi analizzare:")
-
-      if not nome_utente:
-        raise ValueError("Il nome utente non può essere vuoto")
-      
-      # TODO: il nome exit esiste già come profilo  
-      if nome_utente.strip().lower() == "exit":
-        break
-
-      print(f"Stai cercando: {nome_utente}")
-
-      response = get(f"{BASE_URL}/{nome_utente}")
-
-      if response.status_code == 404:
-        print("Il profilo non esiste")
-      else:
-        print(f"Profilo {nome_utente} trovato")
-        controller = True
-        break 
-
-    except Exception as e:
-      print(f"OPS! Qualcosa è andato storto: {e}")
-      
-  # ==================
-  # Secondo while
-  # ==================
-
-  while controller:
-    counter += 1
-    url = f"{BASE_URL}/{nome_utente}?page={counter}&{END_URL}"
-    try:
-      response = get(url)
-      print(response.status_code)
-
-      with open(f"tmp/pagina-{counter}.txt", "w") as f:
-        f.write(response.text)
-        controller = is_next_button_present(response.text)
-        print("File salvato")
-
-    except Exception as e:
-      print(f"Errore: {e}") 
-
-  lista_utenti: list[str] = [] 
-
-  for i in range(counter):
-    print(f"Counter: {i+1}")
-    with open(f"tmp/pagina-{i+1}.txt", "r") as f:
-      text = f.read()
-      lista_utenti.extend(re.findall(PATTERN_USER, text))
-
-  save("db.json", create_record_object(lista_utenti))
-  print("Fine programma, arrivederci.")
- 
 if __name__ == "__main__":
-  main()
+    main()
