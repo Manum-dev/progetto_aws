@@ -1,6 +1,6 @@
 from console import print_menu
 from service import get_followers
-from google import genai
+
 
 def main() -> None:
 
