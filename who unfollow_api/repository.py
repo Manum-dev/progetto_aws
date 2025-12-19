@@ -33,6 +33,10 @@ def check_if_json_db_has_correct_shape(db_name: str) -> bool:
         data = json.load(f)
         return isinstance(data, list)
 
+def get_data_from_db(db_name: str)-> list[dict]:
+    if not check_if_json_db_has_correct_shape(db_name):
+        create_json_db(db_name)
+
 
 def save_json_db(db_name: str, new_value: dict) -> None: 
     """Salva il nuovo oggetto nel db."""
