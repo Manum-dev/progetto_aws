@@ -206,3 +206,24 @@ cython_debug/
 .cursorignore
 .cursorindexingignore
 
+gitignore# Database
+*.db
+*.sqlite
+
+# File di configurazione locali
+config.local.*
+settings.local.py
+
+# File di log
+logs/
+*.log
+
+# Dati sensibili
+secrets/
+credentials/
+*.key
+*.pem
+
+# Output/build personalizzati (se ne hai)
+output/
+results/
