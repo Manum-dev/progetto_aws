@@ -7,7 +7,7 @@ def main() -> None:
     while True:
         print_menu()
 
-        option = input("Seleziona l'operazione che vuoi eseguire:")
+        option = input("Seleziona l'operazione che vuoi eseguire: ")
         
         match option:
             case "1":
