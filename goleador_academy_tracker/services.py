@@ -5,7 +5,7 @@ from config import CHIAVE_API_GEMINI
 # Gestione sicura di Gemini AI con la NUOVA libreria
 try:
     from google import genai  # ← NUOVO import
-    client = genai.Client(api_key=CHIAVE_API_GEMINI)  # ← NUOVO modo di configurare
+    client = genai.Client(api_key=CHIAVE_API_GEMINI) 
     AI_ATTIVA = True
 except (ImportError, Exception) as e:
     print(f"DEBUG AI: Errore durante l'avvio di Gemini: {e}")
