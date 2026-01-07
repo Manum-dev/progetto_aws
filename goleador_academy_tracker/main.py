@@ -1,40 +1,23 @@
 import ui
-import sys
+import os
+
+def pulisci_schermo():
+    # Pulisce la console per rendere tutto più leggibile (opzionale)
+    os.system('cls' if os.name == 'nt' else 'clear')
 
 def avvia_app():
-    """
-    Punto di ingresso principale dell'applicazione Goleador Academy.
-    Gestisce il ciclo infinito del menu fino alla scelta di uscita.
-    """
-    
-    # Messaggio di benvenuto grafico
+    pulisci_schermo()
     print("="*40)
-    print("   🌟 GOLEADOR ACADEMY TRACKER 🌟   ")
+    print("   🌟 BENVENUTI ALLA GOLEADOR ACADEMY 🌟   ")
     print("="*40)
     
-    continua = True
-    
-    while continua:
-        try:
-            # Mostra le opzioni disponibili
-            ui.mostra_menu()
-            
-            # Recupera l'input dell'utente
-            scelta_utente = input("\n👉 Seleziona un'operazione (0-5): ")
-            
-            # Esegue la logica corrispondente e aggiorna la variabile di controllo
-            continua = ui.esegui_scelta(scelta_utente)
-            
-        except KeyboardInterrupt:
-            # Gestisce la chiusura forzata con CTRL+C
-            print("\n\n⚠️ Interruzione rilevata. Chiusura in corso...")
-            continua = False
-        except Exception as e:
-            # Gestisce eventuali errori imprevisti per non far crashare l'app
-            print(f"\n❌ Si è verificato un errore imprevisto: {e}")
-            input("Premi Invio per continuare...")
+    ciclo_attivo = True
+    while ciclo_attivo:
+        ui.mostra_menu()
+        scelta = input("\nCosa vuoi fare? Scegli le seguenti opzioni da 1 a 5!")
+        ciclo_attivo = ui.esegui_scelta(scelta)
 
-    print("\n👋 Grazie per aver usato Goleador Academy. A presto!")
+    print("\nSalvataggio dati... Chiusura programma. Ciao!")
 
 if __name__ == "__main__":
     avvia_app()
