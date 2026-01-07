@@ -1,0 +1,25 @@
+# Chiavi e configurazioni sensibili
+.env
+*.env
+
+# Python
+__pycache__/
+*.pyc
+*.pyo
+*.pyd
+.Python
+
+# Ambiente virtuale
+venv/
+env/
+ENV/
+
+# Dati e output
+dati_academy.json
+report_academy.txt
+*.log
+
+# IDE
+.vscode/
+.idea/
+*.swp
