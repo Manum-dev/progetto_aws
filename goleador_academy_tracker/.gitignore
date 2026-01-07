@@ -1,0 +1,17 @@
+.env
+dot.env
+*.env
+
+# FILE DATI - JSON
+*.json
+
+# PYTHON
+__pycache__/
+*.pyc
+*.pyo
+venv/
+env/
+
+# IDE
+.vscode/
+.idea/
