@@ -1,0 +1,26 @@
+[
+    {
+        "url": "https://github.com",
+        "timestamp": "2026-01-08 15:27:27",
+        "status": "ONLINE",
+        "code": 200,
+        "latency_seconds": 0.225,
+        "error": null
+    },
+    {
+        "url": "https://google.com",
+        "timestamp": "2026-01-08 15:38:38",
+        "status": "ONLINE",
+        "code": 200,
+        "latency_seconds": 0.501,
+        "error": null
+    },
+    {
+        "url": "https://bifactory.it",
+        "timestamp": "2026-01-08 15:38:59",
+        "status": "ONLINE",
+        "code": 200,
+        "latency_seconds": 2.332,
+        "error": null
+    }
+]
