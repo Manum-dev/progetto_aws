@@ -22,5 +22,29 @@
         "code": 200,
         "latency_seconds": 2.332,
         "error": null
+    },
+    {
+        "url": "https://example.com",
+        "timestamp": "2026-01-08 15:45:05",
+        "status": "ONLINE",
+        "code": 200,
+        "latency_seconds": 0.205,
+        "error": null
+    },
+    {
+        "url": "https://bing.com",
+        "timestamp": "2026-01-08 15:45:08",
+        "status": "ONLINE",
+        "code": 200,
+        "latency_seconds": 0.565,
+        "error": null
+    },
+    {
+        "url": "https://ubisoft.com",
+        "timestamp": "2026-01-08 15:55:21",
+        "status": "ONLINE",
+        "code": 200,
+        "latency_seconds": 1.536,
+        "error": null
     }
 ]

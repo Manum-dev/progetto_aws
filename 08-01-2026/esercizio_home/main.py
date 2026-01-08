@@ -1,9 +1,8 @@
 import sys
 import argparse
-import json
-import os
 import services
 import ui
+import storage
 
 def main():
     parser = argparse.ArgumentParser(description="SiteCheck con Export JSON")
@@ -52,32 +51,12 @@ def main():
     
     # SALVATAGGIO JSON FINALE (PERSISTENTE)
     if new_report_data:
-        try:
-            # Carica dati esistenti se il file c'è
-            existing_data = []
-            if os.path.exists(args.output):
-                try:
-                    with open(args.output, "r", encoding="utf-8") as f:
-                        content = f.read()
-                        if content.strip():
-                            existing_data = json.loads(content)
-                            if not isinstance(existing_data, list):
-                                # Se per qualche motivo non è una lista, creane una nuova o gestisci l'errore
-                                # Qui scelgo di sovrascrivere se il formato è corrotto/diverso
-                                existing_data = []
-                except json.JSONDecodeError:
-                    # File corrotto o vuoto
-                    existing_data = []
-
-            # Unisci i dati
-            final_data = existing_data + new_report_data
-
-            with open(args.output, "w", encoding="utf-8") as f:
-                json.dump(final_data, f, indent=4)
-            
-            print(f"\n💾 Report aggiornato in: {ui.GREEN}{args.output}{ui.RESET} (Nuovi: {len(new_report_data)}, Totale: {len(final_data)})")
-        except Exception as e:
-            print(f"\n❌ Errore salvataggio JSON: {e}")
+        success, error_msg, total_count = storage.save_data(args.output, new_report_data)
+        
+        if success:
+            print(f"\n💾 Report aggiornato in: {ui.GREEN}{args.output}{ui.RESET} (Nuovi: {len(new_report_data)}, Totale: {total_count})")
+        else:
+            print(f"\n❌ Errore salvataggio JSON: {error_msg}")
     else:
         print("\nNessun nuovo dato da salvare.")
 
