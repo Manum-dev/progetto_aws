@@ -26,4 +26,8 @@
 ## 💻 Utilizzo
 
 Apri il terminale ed esegui lo script in uno dei seguenti modi:
+### 1. Controllo Rapido (Argomenti)
+Passa uno o più URL direttamente nel comando:
+```bash
+python sitecheck_json.py google.com wikipedia.org
 
