@@ -1,8 +1,6 @@
 === GOLEADOR ACADEMY REPORT ===
-Data: 07/01/2026 16:21
+Data: 08/01/2026 09:22
 
-Top Scorer: Manuela Musmeci con 2 Goleador
+Top Scorer: Claudia Paperina con 6 Goleador
 ------------------------------
-Corso Python M: 0 Goleador totali
-Corso Py: 0 Goleador totali
-Corso Python: 2 Goleador totali
+Corso Python: 6 Goleador totali

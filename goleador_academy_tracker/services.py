@@ -5,11 +5,17 @@ from config import CHIAVE_API_GEMINI
 # Gestione sicura di Gemini AI con la NUOVA libreria
 try:
     from google import genai  # ← NUOVO import
-    client = genai.Client(api_key=CHIAVE_API_GEMINI) 
+    from google.genai import types
+    
+    # ✅ CORREZIONE: Inizializza il client nel modo corretto
+    client = genai.Client(api_key=CHIAVE_API_GEMINI)
     AI_ATTIVA = True
+    print("✅ AI Gemini attivata con successo!")
+    
 except (ImportError, Exception) as e:
     print(f"DEBUG AI: Errore durante l'avvio di Gemini: {e}")
     AI_ATTIVA = False
+    client = None
 
 def aggiungi_corso(nome_corso):
     dati = repository.carica_dati()
@@ -76,15 +82,23 @@ def genera_commento_motivazionale():
         return "Inizia a inserire dati per ricevere consigli dall'AI!"
     
     try:
-        prompt = f"Scrivi un micro-commento motivante per queste studentesse: {stats['per_corso']}. La migliore è {stats['top_scorer']['nome']}."
-        # ← NUOVO modo di chiamare l'API
-        risposta = client.models.generate_content(
+        prompt = f"Scrivi un commento motivante e breve (max 2 frasi) per queste studentesse di programmazione. Statistiche per corso: {stats['per_corso']}. La migliore attualmente è {stats['top_scorer']['nome']} con {stats['top_scorer']['totale']} Goleador."
+        
+        # ✅ Metodo più diretto
+        response = client.models.generate_content(
             model='gemini-2.0-flash-exp',
             contents=prompt
         )
-        return risposta.text
+        
+        # Estrai il testo dalla risposta
+        if hasattr(response, 'text'):
+            return response.text
+        else:
+            return response.candidates[0].content.parts[0].text
+            
     except Exception as e:
-        return f"Errore AI: {e}"
+        print(f"DEBUG AI: {e}")  # Per vedere l'errore esatto
+        return f"Ops! L'AI è in pausa caffè ☕ Riprova tra poco!"
 
 def genera_report_testuale():
     stats = calcola_statistiche()
