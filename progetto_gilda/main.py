@@ -3,6 +3,7 @@ from dotenv import load_dotenv
 from generator import generate_character
 from storage import salva_personaggio
 def main():
+    
     # Load environment variables
     load_dotenv()
     
@@ -10,7 +11,12 @@ def main():
     
     while True:
         print("\n" + "="*40)
-        prompt = input("Descrivi il personaggio che vuoi creare (o scrivi 'esci' per chiudere): ").strip()
+        print("\n1. Genera Nuovo Personaggio")
+        print("2. Vedi Personaggi Salvati")
+        print("3. Esci")
+        scelta = input("\nScegli un'opzione: ")
+        if scelta == "1":
+            prompt = input("Descrivi il personaggio che vuoi creare (o scrivi 'esci' per chiudere): ").strip()
         
         if prompt.lower() in ['esci', 'exit', 'quit', 'q']:
             print("👋 Alla prossima avventura!")
@@ -19,7 +25,7 @@ def main():
         if not prompt:
             continue
             
-        print("🎲 Generazione in corso...")
+        print("🎲 Evocazione in corso...")
         character = generate_character(prompt)
         
         if character:
