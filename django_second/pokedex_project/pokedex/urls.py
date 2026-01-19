@@ -1,5 +1,5 @@
 """
-URL configuration for todolist project.
+URL configuration for pokedex project.
 
 The `urlpatterns` list routes URLs to views. For more information please see:
     https://docs.djangoproject.com/en/6.0/topics/http/urls/
@@ -15,13 +15,9 @@ Including another URLconf
     2. Add a URL to urlpatterns:  path('blog/', include('blog.urls'))
 """
 from django.contrib import admin
-from django.urls import path, include
+from django.urls import include,path
 
 urlpatterns = [
-    path("admin/", admin.site.urls),
-    path("tasks/", include ("task.urls")),
-    path("albums/", include ("albums.urls")),
-    path("comments/", include ("comments.urls")),
-    path("users/", include ("user.urls")),
-    path("projects"), include ("project.urls"),
+    path('admin/', admin.site.urls),
+    path("pokemon/", include("pokemon.urls")),
 ]
