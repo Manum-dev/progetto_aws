@@ -1,7 +1,7 @@
 from django.shortcuts import render, get_object_or_404
 from django.http import JsonResponse
 from .models import Pokemon
-import json
+from django.views.decorators.http import require_POST
 
 # Create your views here.
 def pokemon_list(request):
@@ -13,21 +13,9 @@ def pokemon_list(request):
     pokemons = Pokemon.objects.all().values()
     return JsonResponse(list(pokemons), safe=False)
 
-def pokemon_add(request):
-    if request.method == 'POST':
-        try:
-            data = json.loads(request.body)
-            new_pokemon = Pokemon.objects.create(
-                name=data.get('name'),
-                type=data.get('type'),
-                levels=data.get('levels', 1),
-                descriptions=data.get('description', '')
-            )
-            return JsonResponse({"message": "Creato!", "id": new_pokemon.id}, status=201)
-        except Exception as e:
-            return JsonResponse({"error": str(e)}, status=400)
-    
-    return JsonResponse({"error": "Metodo non consentito"}, status=405)
+def add_pokemon(request):
+    pokemon = Pokemon.objects.create(name="Bulbasaur", pokedex_id=1)
+    return JsonResponse({'id': pokemon.id, 'name': pokemon.name, 'pokedex_id': pokemon.pokedex_id})
 
 def pokemon_delete(request, id):
     if request.method == 'DELETE'or request.method == 'POST': 

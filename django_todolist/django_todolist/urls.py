@@ -1,5 +1,5 @@
 """
-URL configuration for pokedex project.
+URL configuration for django_todolist project.
 
 The `urlpatterns` list routes URLs to views. For more information please see:
     https://docs.djangoproject.com/en/6.0/topics/http/urls/
@@ -19,5 +19,7 @@ from django.urls import path, include
 
 urlpatterns = [
     path('admin/', admin.site.urls),
-    path('pokemon/', include("pokemon.urls")),
+    path('projects', include("project.urls")),
+     path('project-details/', include("project_details".urls")),
+    path('admin/', admin.site.urls),
 ]
