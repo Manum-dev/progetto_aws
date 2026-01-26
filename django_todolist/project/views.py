@@ -3,7 +3,7 @@ from django.http import JsonResponse
 
 # Create your views here.
 from django.views.decorators.csrf import csrf_exempt
-from django.views.decorators.http import require_POST, require_GET
+from django.views.decorators.http import require_POST, require_GET, require_http_methods
 from django.db import OperationalError, transaction, IntegrityError
 import json
 
@@ -79,6 +79,18 @@ def add_project(request):
     
     except IntegrityError:
         return JsonResponse({'error': 'Progetto già esistente'}, status=409)
+
+@csrf_exempt
+@require_http_methods(["DELETE"])
+def delete_project(request, id):
+    try:
+        project = Project.objects.get(id=id)
+        project.delete()
+        return JsonResponse({'message': 'Progetto eliminato con successo'}, status=200)
+    except Project.DoesNotExist:
+        return JsonResponse({'error': 'Progetto non trovato'}, status=404)
+    except OperationalError:
+        return JsonResponse({'error': 'Errore del database'}, status=503)
 
 
 @csrf_exempt

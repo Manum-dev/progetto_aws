@@ -1,8 +1,7 @@
 from django.db import models
-
-# Create your models here.
 import uuid
 
+# Create your models here.
 from project.models import Project
 
 class ProjectDetails(models.Model):
