@@ -28,7 +28,7 @@ def test_flow():
         "title": f"Test Task {uuid.uuid4()}",
         "project_id": project_id
     }
-    response = requests.post(f"{BASE_URL}/tasks/create", json=task_payload)
+    response = requests.post(f"{BASE_URL}/task/create", json=task_payload)
     if response.status_code == 201:
         task_data = response.json()
         task_id = task_data['id']
@@ -44,7 +44,7 @@ def test_flow():
             "is_complete": True,
             "title": "Task Aggiornato"
         }
-        response = requests.patch(f"{BASE_URL}/tasks/update/{task_id}", json=update_payload)
+        response = requests.patch(f"{BASE_URL}/task/update/{task_id}", json=update_payload)
         if response.status_code == 200:
             print("✅ Task aggiornato con successo")
         else:
@@ -53,7 +53,7 @@ def test_flow():
     # 4. Delete Task
     if 'task_id' in locals():
         print("\n4. Eliminazione Task...")
-        response = requests.delete(f"{BASE_URL}/tasks/delete/{task_id}")
+        response = requests.delete(f"{BASE_URL}/task/delete/{task_id}")
         if response.status_code == 200:
             print("✅ Task eliminato con successo")
         else:
