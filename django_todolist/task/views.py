@@ -95,3 +95,11 @@ def update_task(request, id):
         return JsonResponse({'error': 'Titolo già esistente'}, status=409)
     except OperationalError:
         return JsonResponse({'error': 'Errore del database'}, status=503)
+
+@require_GET
+def get_all_tasks(request):
+    try:
+        tasks = list(Task.objects.values())
+        return JsonResponse(tasks, safe=False, status=200)
+    except OperationalError:
+        return JsonResponse({'error': 'Database non disponibile'}, status=503)
