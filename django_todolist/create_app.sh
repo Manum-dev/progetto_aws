@@ -6,4 +6,4 @@ then
 fi
 
 mkdir $1
-python3 manage.py startapp $1 $1
+./venv/bin/python3 manage.py startapp $1 $1
