@@ -16,13 +16,14 @@ Including another URLconf
 """
 from django.contrib import admin
 from django.urls import path, include
+from django.views.generic import RedirectView
 from django.http import HttpResponse
 from django.views.generic import TemplateView
 
 urlpatterns = [
-    path('', TemplateView.as_view(template_name='home.html')),
+    path('', RedirectView.as_view(url='projects/', permanent=False)),
     path('favicon.ico', lambda request: HttpResponse(status=204)),
-     path('task/', include("task.urls")),
+    path('task/', include("task.urls")),
     path('projects/', include("project.urls")),
     path('project_details/', include("project_details.urls")),
     path('admin/', admin.site.urls),

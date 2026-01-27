@@ -16,7 +16,10 @@ def create_task(request):
         data = json.loads(request.body)
         
         # Verifica che il progetto esista
-        project = Project.objects.get(id=data['project_id'])
+        # Verifica che il progetto esista se passato
+        project = None
+        if 'project_id' in data and data['project_id']:
+            project = Project.objects.get(id=data['project_id'])
         
         task = Task.objects.create(
             title=data['title'],
@@ -27,7 +30,7 @@ def create_task(request):
             'id': task.id,
             'title': task.title,
             'is_complete': task.is_complete,
-            'project_id': task.project.id
+            'project_id': task.project.id if task.project else None
         }, status=201)
     
     except json.JSONDecodeError:
