@@ -21,10 +21,9 @@ from django.http import HttpResponse
 from django.views.generic import TemplateView
 
 urlpatterns = [
-    path('', RedirectView.as_view(url='projects/', permanent=False)),
-    path('favicon.ico', lambda request: HttpResponse(status=204)),
-    path('task/', include("task.urls")),
-    path('projects/', include("project.urls")),
-    path('project_details/', include("project_details.urls")),
+    path('project-details/', include("project_details.urls")),
+    path('tags/', include("tag.urls")),
+    path('tasks/', include("task.urls")),
+    path('projects', include("project.urls")),
     path('admin/', admin.site.urls),
 ]
